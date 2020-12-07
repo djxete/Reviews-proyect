@@ -39,61 +39,87 @@ const reviews = [
     },
 ];
 
-console.log(reviews[0].name);
 
 // HTML ELEMENTS
 
 const image = document.querySelector("#person-img");
 let name = document.querySelector("#author");
-//console.log(name);
 const job = document.querySelector("#job");
 const info = document.querySelector("#info");
 const prevBtn = document.querySelector(".prev-btn");
 const nextBtn = document.querySelector(".next-btn");
 const btns = [...document.querySelectorAll("button")];
-//tenemos los 3 botones
 
 
-btns.forEach(btn =>{
 
-    btn.addEventListener("click", ()=>{
 
-    if(btn.classList.contains("prev-btn")){
+// SET STARTING ITEM
 
-        cambiarReviewsAdelante();
-        
-        //console.log(`has seleccionado el botón de previous`);
-    }
-    if(btn.classList.contains("next-btn")){
-        
-        cambiarReviewsAdelante();
-       // console.log(`has seleccionado el botón de adelante`);
-    }
-    if(btn.classList.contains("random-btn")){
-        cambiarReviewsAleatorios();
-    }
+let currentItem = 0;
+
+
+// LOAD INITIAL ITEM
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    showPerson(currentItem);
 
 })
-})
 
+//SHOW PERSON BASED ON ITEM
 
+function showPerson(currentItem){
 
+    const item = reviews[currentItem];
+    image.setAttribute("src", item.img);
+    name.innerHTML = item.name;
+    job.innerHTML = item.job;
+    info.innerHTML = item.text;
 
-
-
-
-
-// Cambiar reviews aleatorios
-
-function cambiarReviewsAleatorios(){
-
-    const randomNumber = Math.floor(Math.random() * reviews.length);
-    image.setAttribute("src", reviews[randomNumber].img);
-    name.innerHTML = `${reviews[randomNumber].name}`;
-    job.innerHTML = `${reviews[randomNumber].job}`;
-    info.innerHTML = `${reviews[randomNumber].text}`
-    
 }
+
+//EVENT LISTENER PREVIOUS
+
+prevBtn.addEventListener("click", () =>{
+
+    currentItem--; //-1
+
+    if(currentItem < 0){
+
+        currentItem = reviews.length-1; //3
+        
+    }
+    showPerson(currentItem);
+})
+
+
+//EVENT LISTENER NEXT
+
+nextBtn.addEventListener("click", ()=>{
+
+    currentItem++;
+
+    if(currentItem > reviews.length-1){
+
+        currentItem = 0;
+        showPerson(currentItem);
+    }
+
+    showPerson(currentItem);
+});
+
+
+
+// RANDOM BUTTON
+
+btns[2].addEventListener("click", ()=>{
+
+    let randomNumber = Math.floor(Math.random() * reviews.length);
+    
+    showPerson(randomNumber);
+})
+
+
 
 
 
